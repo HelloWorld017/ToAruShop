@@ -3,6 +3,7 @@
 namespace Khinenw\AruPG;
 
 use onebone\economyapi\EconomyAPI;
+use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\Listener;
@@ -102,6 +103,14 @@ class Dispenser extends PluginBase implements Listener{
 		$event->setLine(0, $name);
 		$event->setLine(1, TextFormat::AQUA.$meta);
 		$event->setLine(2, $meta.EconomyAPI::getInstance()->getMonetaryUnit());
+	}
+
+	public function onBlockBreak(BlockBreakEvent $event){
+		if(isset($this->shops[$event->getBlock()->getX().";".$event->getBlock()->getY().";".$event->getBlock()->getZ().";".$event->getBlock()->getLevel()->getFolderName()])){
+			if($event->getPlayer()->hasPermission("arushop.destroy")){
+				$event->getPlayer()->sendMessage(TextFormat::RED.ToAruPG::getTranslation("NO_PERMISSION"));
+			}
+		}
 	}
 
 	public function saveShops(){

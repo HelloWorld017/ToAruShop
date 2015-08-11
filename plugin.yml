@@ -1,25 +1,37 @@
-#Khinenw's PotionDispenser
-name: EconomyPotionDispenser
+#Khinenw's ToAruShop
+name: ToAruShop
 author: Khinenw
 version: "0.0.1 alpha"
-description: "An potion dispenser for EconomyS"
-main: Khinenw\PotionDispenser\Dispenser
+description: "An Shop for ToAruPG"
+main: Khinenw\AruPG\ToAruShop
 api: 1.12.0
-depend: [EconomyAPI]
+depend: [EconomyAPI, TAPGAPI]
 
 permissions:
-  potiondispenser.*:
-    description: "The permission for using features of dispenser."
+  arushop.*:
+    description: "The permission for using features of To Aru Shop."
     default: true
     children:
-      potiondispenser.use: 
+      arushop.buy.*:
         default: true
-        description: "The permission for using dispenser."
+        description: "The permission for buying."
+        children:
+          arushop.buy.job:
+            default:true
+            description: "The permission for buying jobs."
 
-      potiondispenser.create:
+          arushop.buy.set:
+            default:true
+            description: "The permission for buying sets (job + skills)."
+
+          arushop.buy.skill:
+            default:true
+            description: "The permission for buying skills."
+
+      arushop.create:
         default: op
-        description: "The permission for creating dispensers."
+        description: "The permission for creating shopss."
       
-      potiondispenser.destroy:
+      arushop.destroy:
         default: op
-        description: "The permission for destroying dispensers."
+        description: "The permission for destroying shops."
