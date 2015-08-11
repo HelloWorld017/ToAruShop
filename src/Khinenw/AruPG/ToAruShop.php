@@ -106,9 +106,14 @@ class Dispenser extends PluginBase implements Listener{
 	}
 
 	public function onBlockBreak(BlockBreakEvent $event){
-		if(isset($this->shops[$event->getBlock()->getX().";".$event->getBlock()->getY().";".$event->getBlock()->getZ().";".$event->getBlock()->getLevel()->getFolderName()])){
+		$tag = $event->getBlock()->getX().";".$event->getBlock()->getY().";".$event->getBlock()->getZ().";".$event->getBlock()->getLevel()->getFolderName();
+		if(isset($this->shops[$tag])){
 			if($event->getPlayer()->hasPermission("arushop.destroy")){
 				$event->getPlayer()->sendMessage(TextFormat::RED.ToAruPG::getTranslation("NO_PERMISSION"));
+				$event->setCancelled();
+			}else{
+				unset($this->shops[$tag]);
+				$this->saveShops();
 			}
 		}
 	}
