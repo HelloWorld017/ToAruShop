@@ -27,6 +27,10 @@ class SkillShop implements Shop{
 
 		if(!SkillManager::getSkill($this->skillId)->canBeAcquired($rpgPlayer)) return "CANNOT_BE_ACQUIRED";
 
+		if($rpgPlayer->hasSkill($this->skillId)){
+			return TextFormat::RED.ToAruPG::getTranslation("ALREADY_HAS_SKILL", ToAruPG::getTranslation(SkillManager::getSkill($this->skillId)->getName()));
+		}
+
 		return true;
 	}
 

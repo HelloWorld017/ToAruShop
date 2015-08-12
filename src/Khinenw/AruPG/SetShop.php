@@ -36,6 +36,12 @@ class SetShop implements Shop{
 				$buyer->sendMessage(TextFormat::RED.ToAruPG::getTranslation("SKILL_COULD_NOT_ACQUIRE", ToAruPG::getTranslation($skill->getName())));
 				continue;
 			}
+
+			if($rpg->hasSkill($skill->getId())){
+				$buyer->sendMessage(TextFormat::RED.ToAruPG::getTranslation("ALREADY_HAS_SKILL", ToAruPG::getTranslation($skill->getName())));
+				continue;
+			}
+
 			$rpg->acquireSkill($skill);
 		}
 
