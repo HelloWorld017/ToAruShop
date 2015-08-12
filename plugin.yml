@@ -17,15 +17,15 @@ permissions:
         description: "The permission for buying."
         children:
           arushop.buy.job:
-            default:true
+            default: true
             description: "The permission for buying jobs."
 
           arushop.buy.set:
-            default:true
+            default: true
             description: "The permission for buying sets (job + skills)."
 
           arushop.buy.skill:
-            default:true
+            default: true
             description: "The permission for buying skills."
 
       arushop.create:

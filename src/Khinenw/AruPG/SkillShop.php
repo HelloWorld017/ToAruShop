@@ -31,7 +31,7 @@ class SkillShop implements Shop{
 	}
 
 	public function buy(Player $buyer){
-		$rpg = ToAruPG::getInstance()->getRPGPlayerByName($buyer->getName());
+		$rpg = ToAruPG::getInstance()->getRPGPlayerByName($buyer);
 		$skill = SkillManager::getSkill($this->skillId);
 		$rpg->acquireSkill($skill);
 		EconomyAPI::getInstance()->reduceMoney($buyer, $this->cost, true, "To Aru Shop");
@@ -40,6 +40,15 @@ class SkillShop implements Shop{
 
 	public function getDescription(){
 		return $this->desc;
+	}
+
+	public function getSaveData(){
+		return [
+			"type" => "SKILL",
+			"meta" => $this->skillId,
+			"cost" => $this->cost,
+			"desc" => $this->desc
+		];
 	}
 
 }

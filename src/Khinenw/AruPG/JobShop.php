@@ -27,7 +27,7 @@ class JobShop implements Shop{
 	}
 
 	public function buy(Player $buyer){
-		ToAruPG::getInstance()->getRPGPlayerByName($buyer->getName())->changeJob(JobManager::getJob($this->jobId));
+		ToAruPG::getInstance()->getRPGPlayerByName($buyer)->changeJob(JobManager::getJob($this->jobId));
 		EconomyAPI::getInstance()->reduceMoney($buyer, $this->cost, true, "To Aru Shop");
 		$buyer->sendMessage(TextFormat::AQUA.ToAruPG::getTranslation("BOUGHT"));
 	}
@@ -38,6 +38,7 @@ class JobShop implements Shop{
 
 	public function getSaveData(){
 		return [
+			"type" => "JOB",
 			"meta" => $this->jobId,
 			"cost" => $this->cost,
 			"desc" => $this->desc

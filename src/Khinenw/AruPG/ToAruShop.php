@@ -12,7 +12,7 @@ use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 
-class Dispenser extends PluginBase implements Listener{
+class ToAruShop extends PluginBase implements Listener{
 
 	/**
 	 * @var $shops Shop[]
@@ -24,7 +24,17 @@ class Dispenser extends PluginBase implements Listener{
 	public function onEnable(){
 		@mkdir($this->getDataFolder());
 
+		if(!is_file($this->getDataFolder()."shops.json")){
+			file_put_contents($this->getDataFolder()."shops.json", json_encode([]));
+		}
+
 		$shops = json_decode(file_get_contents($this->getDataFolder()."shops.json"), true);
+
+		$translations = yaml_parse(stream_get_contents($this->getResource("translation.yml")));
+
+		foreach($translations as $name => $data){
+			ToAruPG::addTranslation($name, $data);
+		}
 
 		foreach($shops as $tag => $meta){
 			switch($meta["type"]){
@@ -37,7 +47,7 @@ class Dispenser extends PluginBase implements Listener{
 					break;
 
 				case "SKILL":
-					$this->shops[$tag] = new SetShop($meta["meta"], $meta["cost"], $meta["desc"]);
+					$this->shops[$tag] = new SkillShop($meta["meta"], $meta["cost"], $meta["desc"]);
 					break;
 			}
 		}
@@ -59,12 +69,12 @@ class Dispenser extends PluginBase implements Listener{
 
 		$cost = $text[2];
 		$meta = $text[3];
-		$name = "";
 
 		$tag = $event->getBlock()->getX().";".$event->getBlock()->getY().";".$event->getBlock()->getZ().";".$event->getBlock()->getLevel()->getFolderName();
 
-		if(!is_numeric($text[2]) || !is_numeric($text[3])){
+		if(!is_numeric($cost) || !is_numeric($meta)){
 			$event->getPlayer()->sendMessage(TextFormat::RED.ToAruPG::getTranslation("WRONG_SHOP_META"));
+			return;
 		}
 
 		switch(strtoupper($text[1])){
@@ -97,22 +107,27 @@ class Dispenser extends PluginBase implements Listener{
 				$meta = ToAruPG::getTranslation(JobManager::getJob($meta)->getName());
 				$name = ToAruPG::getTranslation("SET_SHOP");
 				break;
+
+			default: $event->getPlayer()->sendMessage(TextFormat::RED.ToAruPG::getTranslation("WRONG_SHOP_META")); return;
 		}
 		$this->saveShops();
 
 		$event->setLine(0, $name);
 		$event->setLine(1, TextFormat::AQUA.$meta);
-		$event->setLine(2, $meta.EconomyAPI::getInstance()->getMonetaryUnit());
+		$event->setLine(2, $cost.EconomyAPI::getInstance()->getMonetaryUnit());
+		$event->setLine(3, "");
+		$event->getPlayer()->sendMessage(TextFormat::AQUA.ToAruPG::getTranslation("SHOP_CREATED"));
 	}
 
 	public function onBlockBreak(BlockBreakEvent $event){
 		$tag = $event->getBlock()->getX().";".$event->getBlock()->getY().";".$event->getBlock()->getZ().";".$event->getBlock()->getLevel()->getFolderName();
 		if(isset($this->shops[$tag])){
-			if($event->getPlayer()->hasPermission("arushop.destroy")){
+			if(!$event->getPlayer()->hasPermission("arushop.destroy")){
 				$event->getPlayer()->sendMessage(TextFormat::RED.ToAruPG::getTranslation("NO_PERMISSION"));
 				$event->setCancelled();
 			}else{
 				unset($this->shops[$tag]);
+				$event->getPlayer()->sendMessage(TextFormat::AQUA.ToAruPG::getTranslation("SHOP_DESTROYED"));
 				$this->saveShops();
 			}
 		}

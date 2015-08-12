@@ -26,16 +26,16 @@ class SetShop implements Shop{
 	}
 
 	public function buy(Player $buyer){
-		$rpg = ToAruPG::getInstance()->getRPGPlayerByName($buyer->getName());
+		$rpg = ToAruPG::getInstance()->getRPGPlayerByName($buyer);
 		$job = JobManager::getJob($this->jobId);
 		$rpg->changeJob($job);
 
 		foreach($job->getSkills() as $skill){
+			$skill = SkillManager::getSkill($skill);
 			if(!$skill->canBeAcquired($rpg)){
-				$buyer->sendMessage(TextFormat::RED.ToAruPG::getTranslation("SKILL_COULD_NOT_ACQUIRE"));
+				$buyer->sendMessage(TextFormat::RED.ToAruPG::getTranslation("SKILL_COULD_NOT_ACQUIRE", ToAruPG::getTranslation($skill->getName())));
 				continue;
 			}
-
 			$rpg->acquireSkill($skill);
 		}
 
@@ -45,6 +45,15 @@ class SetShop implements Shop{
 
 	public function getDescription(){
 		return $this->desc;
+	}
+
+	public function getSaveData(){
+		return [
+			"type" => "SET",
+			"meta" => $this->jobId,
+			"cost" => $this->cost,
+			"desc" => $this->desc
+		];
 	}
 
 }
