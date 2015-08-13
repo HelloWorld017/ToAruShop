@@ -23,6 +23,8 @@ class JobShop implements Shop{
 		if(EconomyAPI::getInstance()->myMoney($buyer) < $this->cost) return "INSUFFICIENT_MONEY";
 		if(!ToAruPG::getInstance()->isValidPlayer($buyer)) return "INVALID_PLAYER";
 
+		if($rpg->getCurrentJob()->getId() === $this->jobId) return "ALREADY_HAS_JOB";
+
 		return true;
 	}
 

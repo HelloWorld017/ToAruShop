@@ -28,7 +28,11 @@ class SetShop implements Shop{
 	public function buy(Player $buyer){
 		$rpg = ToAruPG::getInstance()->getRPGPlayerByName($buyer);
 		$job = JobManager::getJob($this->jobId);
-		$rpg->changeJob($job);
+		if($rpg->getCurrentJob()->getId() == $this->jobId){
+			$buyer->sendMessage(TextFormat::RED.ToAruPG::getTranslation("JOB_COULD_NOT_ACQUIRE"));
+		}else{
+			$rpg->changeJob($job);
+		}
 
 		foreach($job->getSkills() as $skill){
 			$skill = SkillManager::getSkill($skill);

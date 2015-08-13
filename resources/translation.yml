@@ -5,7 +5,9 @@ NO_PERMISSION: "You are not allowed."
 WRONG_SHOP_META: "Wrong shop data!"
 TAP_ONE_MORE: "Double tap to buy!"
 JOB_SHOP: Job Shop
-SET_SHOP: "Job + Skills Shop"
+SET_SHOP: "Job + Skills"
 SKILL_SHOP: Skill Shop
 SHOP_CREATED: Successfully created a shop.
 SHOP_DESTROYED: Successfully destroyed a shop.
+JOB_COULD_NOT_ACQUIRE: "Could't buy the job"
+ALREADY_HAS_SKILL: "You already have same skill!"
