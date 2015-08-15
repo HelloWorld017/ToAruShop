@@ -10,4 +10,4 @@ SKILL_SHOP: Skill Shop
 SHOP_CREATED: Successfully created a shop.
 SHOP_DESTROYED: Successfully destroyed a shop.
 JOB_COULD_NOT_ACQUIRE: "Could't buy the job"
-ALREADY_HAS_SKILL: "You already have same skill!"
+ALREADY_HAS_SKILL: "You already have same skill [%s1]!"
