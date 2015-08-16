@@ -10,7 +10,7 @@ depend: [EconomyAPI, TAPGAPI]
 permissions:
   arushop.*:
     description: "The permission for using features of To Aru Shop."
-    default: true
+    default: op
     children:
       arushop.buy.*:
         default: true
