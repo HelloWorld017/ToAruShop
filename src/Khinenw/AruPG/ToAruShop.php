@@ -2,6 +2,7 @@
  
 namespace Khinenw\AruPG;
 
+use Khinenw\XcelUpdater\UpdatePlugin;
 use onebone\economyapi\EconomyAPI;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
@@ -9,10 +10,9 @@ use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\Player;
-use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 
-class ToAruShop extends PluginBase implements Listener{
+class ToAruShop extends UpdatePlugin implements Listener{
 
 	/**
 	 * @var $shops Shop[]
@@ -199,5 +199,13 @@ class ToAruShop extends PluginBase implements Listener{
 		}
 
 		$event->setCancelled(true);
+	}
+
+	public function compVersion($pluginVersion, $repoVersion){
+		return $pluginVersion !== $repoVersion;
+	}
+
+	public function getPluginYamlURL(){
+		return "https://raw.githubusercontent.com/HelloWorld017/ToAruShop/master/plugin.yml";
 	}
 }

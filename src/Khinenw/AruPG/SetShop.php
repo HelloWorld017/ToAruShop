@@ -21,18 +21,17 @@ class SetShop implements Shop{
 	public function canBuy(Player $buyer){
 		if(!$buyer->hasPermission("arushop.buy.set")) return "NO_PERMISSION";
 		if(EconomyAPI::getInstance()->myMoney($buyer) < $this->cost) return "INSUFFICIENT_MONEY";
-		if(!ToAruPG::getInstance()->isValidPlayer($buyer)) return "INVALID_PLAYER";
+
+		if(($rpg = ToAruPG::getInstance()->getRPGPlayerByName($buyer->getName())) === null) return "INVALID_PLAYER";
+		if($rpg->canChangeJob(JobManager::getJob($this->jobId))) return "JOB_COULD_NOT_ACQUIRE";
+
 		return true;
 	}
 
 	public function buy(Player $buyer){
 		$rpg = ToAruPG::getInstance()->getRPGPlayerByName($buyer);
 		$job = JobManager::getJob($this->jobId);
-		if($rpg->getCurrentJob()->getId() == $this->jobId){
-			$buyer->sendMessage(TextFormat::RED.ToAruPG::getTranslation("JOB_COULD_NOT_ACQUIRE"));
-		}else{
-			$rpg->changeJob($job);
-		}
+        $rpg->changeJob($job);
 
 		foreach($job->getSkills() as $skill){
 			$skill = SkillManager::getSkill($skill);

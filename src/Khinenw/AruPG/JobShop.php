@@ -21,9 +21,9 @@ class JobShop implements Shop{
 	public function canBuy(Player $buyer){
 		if(!$buyer->hasPermission("arushop.buy.job")) return "NO_PERMISSION";
 		if(EconomyAPI::getInstance()->myMoney($buyer) < $this->cost) return "INSUFFICIENT_MONEY";
-		if(!ToAruPG::getInstance()->isValidPlayer($buyer)) return "INVALID_PLAYER";
+		if(($rpg = ToAruPG::getInstance()->getRPGPlayerByName($buyer->getName())) === null) return "INVALID_PLAYER";
 
-		if($rpg->getCurrentJob()->getId() === $this->jobId) return "ALREADY_HAS_JOB";
+		if($rpg->canChangeJob(JobManager::getJob($this->jobId))) return "JOB_COULD_NOT_ACQUIRE";
 
 		return true;
 	}
