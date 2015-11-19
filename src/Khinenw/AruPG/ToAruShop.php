@@ -3,6 +3,7 @@
 namespace Khinenw\AruPG;
 
 use Khinenw\XcelUpdater\UpdatePlugin;
+use Khinenw\XcelUpdater\XcelUpdater;
 use onebone\economyapi\EconomyAPI;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
@@ -23,6 +24,7 @@ class ToAruShop extends UpdatePlugin implements Listener{
 
 	public function onEnable(){
 		@mkdir($this->getDataFolder());
+		XcelUpdater::chkUpdate($this);
 
 		if(!is_file($this->getDataFolder()."shops.json")){
 			file_put_contents($this->getDataFolder()."shops.json", json_encode([]));
