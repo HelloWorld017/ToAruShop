@@ -1,7 +1,7 @@
 #Khinenw's ToAruShop
 name: ToAruShop
 author: Khinenw
-version: "0.0.2 alpha"
+version: "0.0.2.1 alpha"
 description: "An Shop for ToAruPG"
 main: Khinenw\AruPG\ToAruShop
 api: 1.12.0
